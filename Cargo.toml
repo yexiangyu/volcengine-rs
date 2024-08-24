@@ -3,6 +3,10 @@ name = "volcengine"
 version = "0.1.0"
 edition = "2021"
 description = "a rust api sdk for volcengine, for CI test, not for production"
+categories = ["api-bindings"]
+homepage = "https://github.com/yexiangyu/volcengine-rs"
+documentation = "https://docs.rs/volcengine-rs"
+license = "MIT"
 
 [dependencies]
 dotenv = "0.15.0"
