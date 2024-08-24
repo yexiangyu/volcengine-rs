@@ -1,0 +1,19 @@
+[package]
+name = "volcengine"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dotenv = "0.15.0"
+ffmpeg-next = "7.0.4"
+http = "1"
+reqwest = "0.12.5"
+serde = { version = "1.0.208", features = ["derive"] }
+serde_json = "1.0.125"
+serde_with = "3.9.0"
+smart-default = "0.7.1"
+thiserror = "1.0.63"
+tokio = { version = "1.39.3", features = ["full"] }
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"
+url = "2.4"
