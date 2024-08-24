@@ -24,6 +24,14 @@ impl Client {
         })
     }
 
+    pub fn from_env_file(filename: impl AsRef<str>) -> Result<Self> {
+        let _ = dotenv::from_filename(filename.as_ref())?;
+        Ok(Self {
+            access_token: std::env::var("VOLCENGINE_ACCESS_TOKEN")?,
+            ..Self::default()
+        })
+    }
+
     pub fn authorize(&self, req: &mut Request) -> Result<()> {
         req.headers_mut().insert(
             header::AUTHORIZATION,
