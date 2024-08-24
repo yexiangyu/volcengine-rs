@@ -2,6 +2,7 @@
 name = "volcengine"
 version = "0.1.0"
 edition = "2021"
+description = "a rust api sdk for volcengine, for CI test, not for production"
 
 [dependencies]
 dotenv = "0.15.0"
