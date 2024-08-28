@@ -18,7 +18,11 @@ pub enum Error
     #[error("not file extension")]
     NoExtension,
     #[error("{0}")]
-    Io(#[from] std::io::Error)
+    Io(#[from] std::io::Error),
+    #[error("record asr return error")]
+    RecordAsrResponse,
+    #[error("record asr request build error")]
+    RecordRequestBuild
 }
 
 pub type Result<T> = std::result::Result<T, Error>;

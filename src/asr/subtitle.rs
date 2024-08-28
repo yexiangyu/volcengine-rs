@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{client::Client, error::*};
+use crate::{client::Client, error::*, types::*};
 use http::{header, HeaderValue, Method};
 use reqwest::Body;
 use serde_json::{json, Value};
@@ -183,43 +183,6 @@ impl From<PathBuf> for SubtitleSource {
     }
 }
 
-#[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
-pub enum Boolean {
-    True,
-    False,
-}
-
-impl From<bool> for Boolean {
-    fn from(value: bool) -> Self {
-        match value
-        {
-            true => Boolean::True,
-            false => Boolean::False
-        }
-    }
-}
-
-impl From<Boolean> for bool
-{
-    fn from(value: Boolean) -> Self {
-        match value
-        {
-            Boolean::True => true,
-            Boolean::False => false
-        }
-    }
-}
-
-impl From<Boolean> for String
-{
-    fn from(value: Boolean) -> Self {
-        match value
-        {
-            Boolean::True => "True".into(),
-            Boolean::False => "False".into()
-        }
-    }
-}
 
 #[skip_serializing_none]
 #[derive(Debug, Clone, serde::Deserialize, serde::Serialize)]
