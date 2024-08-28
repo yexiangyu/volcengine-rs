@@ -10,7 +10,6 @@ license = "MIT"
 
 [dependencies]
 dotenv = "0.15.0"
-# ffmpeg-next = "7.0.4"
 http = "1"
 reqwest = "0.12.5"
 serde = { version = "1.0.208", features = ["derive"] }
