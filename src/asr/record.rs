@@ -21,7 +21,7 @@ pub struct RecordAsrResponse {
 }
 
 impl RecordAsrResponse {
-    pub async fn waiting_result(self, client: &Client) -> Result<RecordAsrResult> {
+    pub async fn waiting_result(self, client: &Client, retry: Duration) -> Result<RecordAsrResult> {
         let Self {
             id,
             appid,
@@ -61,10 +61,14 @@ impl RecordAsrResponse {
 
             let rep = rep.get_mut("resp").ok_or(Error::RecordAsrResponse)?.take();
 
+            for l in serde_json::to_string_pretty(&rep)?.lines() {
+                trace!("REP: {}", l);
+            }
+
             match rep.get("code").and_then(|v| v.as_i64()) {
                 Some(1000) => break rep,
                 _ => {
-                    tokio::time::sleep(Duration::from_secs_f32(0.5)).await;
+                    tokio::time::sleep(retry).await;
                     continue;
                 }
             }
@@ -327,27 +331,21 @@ impl_with!(channel_split, Boolean);
 #[derive(
     Debug, Clone, serde::Deserialize, serde::Serialize, smart_default::SmartDefault, PartialEq,
 )]
-pub struct Word
-{
+pub struct Word {
     pub start_time: i64,
     pub end_time: i64,
     pub text: String,
 }
 
 #[skip_serializing_none]
-#[derive(
-    Debug, Clone, serde::Deserialize, serde::Serialize, PartialEq,
-)]
-pub struct UAddtions
-{
+#[derive(Debug, Clone, serde::Deserialize, serde::Serialize, PartialEq)]
+pub struct UAddtions {
     pub event: Option<String>,
-    pub speaker: Option<String>
+    pub speaker: Option<String>,
 }
 
 #[skip_serializing_none]
-#[derive(
-    Debug, Clone, serde::Deserialize, serde::Serialize, PartialEq,
-)]
+#[derive(Debug, Clone, serde::Deserialize, serde::Serialize, PartialEq)]
 pub struct Utterance {
     pub start_time: i64,
     pub end_time: i64,
@@ -357,9 +355,7 @@ pub struct Utterance {
 }
 
 #[skip_serializing_none]
-#[derive(
-    Debug, Clone, serde::Deserialize, serde::Serialize, PartialEq,
-)]
+#[derive(Debug, Clone, serde::Deserialize, serde::Serialize, PartialEq)]
 pub struct RecordAsrResult {
     pub id: String,
     pub code: i32,
@@ -393,10 +389,9 @@ async fn test_record_asr_ok() -> Result<()> {
         .format("mp3")
         .build()?;
 
-    let rep = req.call(&client).await?.waiting_result(&client).await?;
+    let rep = req.call(&client).await?.waiting_result(&client, Duration::from_secs(10)).await?;
 
-    for l in serde_json::to_string_pretty(&rep)?.lines()
-    {
+    for l in serde_json::to_string_pretty(&rep)?.lines() {
         tracing::info!("{}", l);
     }
 
