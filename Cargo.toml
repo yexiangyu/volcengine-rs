@@ -1,6 +1,6 @@
 [package]
 name = "volcengine"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2021"
 description = "a rust api sdk for volcengine, for CI test, not for production"
 categories = ["api-bindings"]
@@ -10,7 +10,7 @@ license = "MIT"
 
 [dependencies]
 dotenv = "0.15.0"
-ffmpeg-next = "7.0.4"
+# ffmpeg-next = "7.0.4"
 http = "1"
 reqwest = "0.12.5"
 serde = { version = "1.0.208", features = ["derive"] }
